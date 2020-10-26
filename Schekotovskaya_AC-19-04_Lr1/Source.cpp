@@ -106,9 +106,10 @@ KC CreateKC()
 	cout << "\nType the number of workshops in operation: ";
 	cin >> s.n_ws_op;
 
-	cout << "\nType the efficiency of the KC: ";
-	cin >> s.ef;
+//	cout << "\nType the efficiency of the KC: ";
+//	cin >> s.ef;
 
+	s.ef = 1. / (rand() % 100);
 	return s;
 }
 
@@ -136,6 +137,7 @@ KC UploadKC()
 
 void ViewKC(const KC& s)
 {
+	cout.precision(2);
 	cout << "\nID: " << s.id << endl
 		<< "Name: " << s.name << endl
 		<< "Number of workshops: " << s.n_ws << endl
@@ -147,7 +149,6 @@ void SaveKC(const KC& s)
 {
 	ofstream fout;
 	fout.open("data2.txt", ios::out);
-
 	fout << s.id << endl << s.name << endl << s.n_ws << endl << s.n_ws_op << endl << s.ef << endl;
 	
 	fout.close();
@@ -173,7 +174,7 @@ void EditKC(KC& s)
 
 void Menu()
 {
-	cout << "\nMain menu\n" << "1. Add a pipe\n" << "2. Add a KC\n" << "3. View all objects\n" << "4. Edit the pipe\n" << "5. Edit the KC\n"<< "6. Save\n" << "7. Upload\n" << "0. Exit\n" << "Select the desired number from the menu: ";
+	cout << "\nMain menu\n" << "1. Add a pipe\n" << "2. Add a KC\n" << "3. View objects\n" << "4. Edit the pipe\n" << "5. Edit the KC\n"<< "6. Save\n" << "7. Upload\n" << "0. Exit\n" << "Select the desired number from the menu: ";
 
 }
 
@@ -243,7 +244,7 @@ int main()
 { 
 	pipe pi;
 	KC st; // узнать почему не работает в свиче
-	
+	 
 
 	while (true)
 	{
@@ -260,7 +261,7 @@ int main()
 			st = CreateKC();
 			break;
 		case 3:
-			cout << "Select object 1-Pipe 2-KC: ";
+			cout << "\nSelect object 1-Pipe 2-KC: ";
 			int m;
 			cin >> m;
 			ViewThat(m, pi, st);
@@ -272,13 +273,13 @@ int main()
 			EditKC(st);
 			break;
 		case 6 :
-			cout << "Select object 1-Pipe 2-KC 3-All: ";
+			cout << "\nSelect object 1-Pipe 2-KC 3-All: ";
 			int l;
 			cin >> l;
 			SaveThat(l, pi, st);
 			break;
 		case 7 :
-			cout << "Select object 1-Pipe 2-KC: ";
+			cout << "\nSelect object 1-Pipe 2-KC: ";
 			int z;
 			cin >> z;
 			UploadThat(z);
