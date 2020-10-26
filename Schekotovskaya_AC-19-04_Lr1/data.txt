@@ -1,6 +1,0 @@
-
-ID: 0
-Name: stan
-Number of workshops: 5
-Number of workshops in operation: 1
-Efficiency: 1

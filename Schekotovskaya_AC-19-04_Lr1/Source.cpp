@@ -37,6 +37,26 @@ pipe CreatePipe()
 	return p;
 }
 
+pipe UploadPipe()
+{
+	ifstream fin;
+	fin.open("data1.txt", ios::in);
+
+	pipe p;
+
+	fin >> p.id;
+
+	fin >> p.length;
+
+	fin >> p.diameter;
+
+	fin >> p.repair_status;
+	
+	fin.close();
+
+	return p;
+}
+
 void ViewPipe(const pipe& p)
 {
 	cout << "\nID: " << p.id << endl
@@ -48,12 +68,11 @@ void ViewPipe(const pipe& p)
 void SavePipe(const pipe& p)
 {
 	ofstream fout;
-	fout.open("data1.txt", 'w');
+	fout.open("data1.txt", ios::out);
 
-	fout << "\nID: " << p.id << endl
-		<< "Length: " << p.length << endl
-		<< "Diametr: " << p.diameter << endl
-		<< "Repair status: " << p.repair_status << endl;
+	fout << p.id << endl << p.length << endl << p.diameter << endl << p.repair_status << endl;
+
+	fout.close();
 }
 
 void EditPipe(pipe& p)
@@ -93,6 +112,28 @@ KC CreateKC()
 	return s;
 }
 
+KC UploadKC()
+{
+	KC s;
+
+	ifstream fin;
+	fin.open("data2.txt", ios::in);
+	
+	fin >> s.id;
+
+	fin >> s.name;
+
+	fin >> s.n_ws;
+
+	fin >> s.n_ws_op;
+
+	fin >> s.ef;
+
+	fin.close();
+
+	return s;
+}
+
 void ViewKC(const KC& s)
 {
 	cout << "\nID: " << s.id << endl
@@ -105,13 +146,11 @@ void ViewKC(const KC& s)
 void SaveKC(const KC& s)
 {
 	ofstream fout;
-	fout.open("data2.txt", 'w');
+	fout.open("data2.txt", ios::out);
 
-	fout << "\nID: " << s.id << endl
-		<< "Name: " << s.name << endl
-		<< "Number of workshops: " << s.n_ws << endl
-		<< "Number of workshops in operation: " << s.n_ws_op << endl
-		<< "Efficiency: " << s.ef << endl;
+	fout << s.id << endl << s.name << endl << s.n_ws << endl << s.n_ws_op << endl << s.ef << endl;
+	
+	fout.close();
 }
 
 void EditKC(KC& s)
@@ -141,7 +180,7 @@ void Menu()
 void SaveAll(const pipe& p, const KC& s)
 {
 	ofstream fout;
-	fout.open("data3.txt", 'w');
+	fout.open("data3.txt", ios::out);
 
 
 	fout << "\nID: " << p.id << endl
@@ -155,6 +194,7 @@ void SaveAll(const pipe& p, const KC& s)
 		<< "Number of workshops in operation: " << s.n_ws_op << endl
 		<< "Efficiency: " << s.ef << endl;
 
+	fout.close();
 }
 
 void ViewThat(int m,const pipe& pi,const KC& st)
@@ -169,6 +209,20 @@ void ViewThat(int m,const pipe& pi,const KC& st)
 		break;
 	}
 }
+
+void UploadThat(int z)
+{
+	switch (z)
+	{
+	case 1:
+		ViewPipe(UploadPipe());
+		break;
+	case 2:
+		ViewKC(UploadKC());
+		break;
+	}
+}
+
 void SaveThat(int l,const pipe& pi,const KC& st)
 {
 	switch (l)
@@ -223,7 +277,12 @@ int main()
 			cin >> l;
 			SaveThat(l, pi, st);
 			break;
-			//case 7 :
+		case 7 :
+			cout << "Select object 1-Pipe 2-KC: ";
+			int z;
+			cin >> z;
+			UploadThat(z);
+			break;
 		case 0 :
 			return 0;
 		}
