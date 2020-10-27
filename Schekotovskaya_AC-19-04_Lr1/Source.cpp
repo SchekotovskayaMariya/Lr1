@@ -345,7 +345,7 @@ int main()
 		{
 		case 1:
 		{	cin >> pi;
-			//pi = CreatePipe();
+			/*pi = CreatePipe();*/
 			break;
 		}
 		case 2:
