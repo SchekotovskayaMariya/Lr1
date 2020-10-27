@@ -210,11 +210,28 @@ void EditKC(KC& s)
 	cin >> choiñe;
 	if (choiñe == 1)
 	{
-		s.n_ws_op += 1;
+		if(s.n_ws_op < s.n_ws)
+		{
+			s.n_ws_op += 1;
+			cout << s.n_ws_op;
+		}
+		else
+		{
+			cout << "\nYou can choose 2 only, try again\n";
+		}
 	}
 	else
 	{
-		s.n_ws_op -= 1;
+		if(s.n_ws_op > 0)
+		{
+			s.n_ws_op -= 1;
+		cout << s.n_ws_op;
+		}
+		
+		else
+		{
+			cout << "\nYou can choose 1 only, try again\n";
+		}
 	}
 }
 
