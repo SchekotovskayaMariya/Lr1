@@ -1,8 +1,23 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <ctime>
 
 using namespace std;
+
+template <typename T>
+T ChekNum(T min, T max, string h)
+{
+	T x;
+	cout << h;
+	while ((cin >> x).fail() || x<min || x>max )
+	{
+		cin.clear();
+		cin.ignore(1000, '\n');
+		cout << h;
+	}
+	return x;
+}
 
 struct pipe
 {
@@ -23,37 +38,49 @@ pipe CreatePipe()
 	pipe p;
 
 	//cout << "Type the pipe ID: ";
-	p.id = 0;
+		p.id = 0;
 
-	cout << "\nType the length of the pipe: ";
-	cin >> p.length;
-
-	cout << "\nType the diameter of the pipe: ";
-	cin >> p.diameter;
-
-	cout << "\nType the status of the repair pipe: ";
-	cin >> p.repair_status;
 	
+		p.length = ChekNum(0, 1000, "\nType the length of the pipe: ");
+		
+		p.diameter = ChekNum(0, 1000, "\nType the diameter of the pipe: ");
+
+		p.repair_status = ChekNum(0, 1, "\nType the status of the repair pipe: ");
+	
+	/*
+		cout << "\nType the length of the pipe: ";
+		cin >> p.length;
+	
+		cout << "\nType the diameter of the pipe: ";
+		cin >> p.diameter;
+	*/
+		/*
+			cout << "\nType the status of the repair pipe: ";
+			cin >> p.repair_status;
+		*/
+
 	return p;
 }
 
 pipe UploadPipe()
 {
+	pipe p;
+
 	ifstream fin;
 	fin.open("data1.txt", ios::in);
 
-	pipe p;
+	if (fin.is_open())
+	{
+		fin >> p.id;
 
-	fin >> p.id;
+		fin >> p.length;
 
-	fin >> p.length;
+		fin >> p.diameter;
 
-	fin >> p.diameter;
+		fin >> p.repair_status;
 
-	fin >> p.repair_status;
-	
-	fin.close();
-
+		fin.close();
+	}
 	return p;
 }
 
@@ -69,10 +96,12 @@ void SavePipe(const pipe& p)
 {
 	ofstream fout;
 	fout.open("data1.txt", ios::out);
+	if (fout.is_open())
+	{
+		fout << p.id << endl << p.length << endl << p.diameter << endl << p.repair_status << endl;
 
-	fout << p.id << endl << p.length << endl << p.diameter << endl << p.repair_status << endl;
-
-	fout.close();
+		fout.close();
+	}
 }
 
 void EditPipe(pipe& p)
@@ -96,20 +125,32 @@ KC CreateKC()
 
 	//cout << "Type the KC ID: ";
 	s.id = 0;
-
+	
 	cout << "\nType a name of the KC: ";
 	cin >> s.name;
 
-	cout << "\nType the number of workshops: ";
-	cin >> s.n_ws;
+	s.n_ws = ChekNum(0, 1000, "\nType the number of workshops: ");
 
-	cout << "\nType the number of workshops in operation: ";
-	cin >> s.n_ws_op;
+	do
+	{
+		cin.clear();
+		cin.ignore(1000, '\n');
+		s.n_ws_op = ChekNum(0, 1000, "\nType the number of workshops in operation: ");
+	}
+	while (s.n_ws_op > s.n_ws);
+
+	/*cout << "\nType the number of workshops: ";
+	cin >> s.n_ws;*/
+
+	/*cout << "\nType the number of workshops in operation: ";
+	cin >> s.n_ws_op;*/
 
 //	cout << "\nType the efficiency of the KC: ";
 //	cin >> s.ef;
 
+	srand(time(NULL));
 	s.ef = 1. / (rand() % 100);
+
 	return s;
 }
 
@@ -120,18 +161,20 @@ KC UploadKC()
 	ifstream fin;
 	fin.open("data2.txt", ios::in);
 	
-	fin >> s.id;
+	if (fin.is_open())
+	{
+		fin >> s.id;
 
-	fin >> s.name;
+		fin >> s.name;
 
-	fin >> s.n_ws;
+		fin >> s.n_ws;
 
-	fin >> s.n_ws_op;
+		fin >> s.n_ws_op;
 
-	fin >> s.ef;
+		fin >> s.ef;
 
-	fin.close();
-
+		fin.close();
+	}
 	return s;
 }
 
@@ -149,9 +192,12 @@ void SaveKC(const KC& s)
 {
 	ofstream fout;
 	fout.open("data2.txt", ios::out);
-	fout << s.id << endl << s.name << endl << s.n_ws << endl << s.n_ws_op << endl << s.ef << endl;
-	
-	fout.close();
+	if (fout.is_open())
+	{
+		fout << s.id << endl << s.name << endl << s.n_ws << endl << s.n_ws_op << endl << s.ef << endl;
+
+		fout.close();
+	}
 }
 
 void EditKC(KC& s)
@@ -174,8 +220,15 @@ void EditKC(KC& s)
 
 void Menu()
 {
-	cout << "\nMain menu\n" << "1. Add a pipe\n" << "2. Add a KC\n" << "3. View objects\n" << "4. Edit the pipe\n" << "5. Edit the KC\n"<< "6. Save\n" << "7. Upload\n" << "0. Exit\n" << "Select the desired number from the menu: ";
-
+	cout << "\nMain menu\n" 
+		<< "1. Add a pipe\n" 
+		<< "2. Add a KC\n" 
+		<< "3. View objects\n" 
+		<< "4. Edit the pipe\n"
+		<< "5. Edit the KC\n"
+		<< "6. Save\n" 
+		<< "7. Upload\n" 
+		<< "0. Exit\n";
 }
 
 void SaveAll(const pipe& p, const KC& s)
@@ -198,94 +251,147 @@ void SaveAll(const pipe& p, const KC& s)
 	fout.close();
 }
 
-void ViewThat(int m,const pipe& pi,const KC& st)
+void ViewThat(const pipe& pi,const KC& st)
 {
-	switch (m)
+	switch (ChekNum(1,2, "\nSelect object 1-Pipe 2-KC: "))
 	{
 	case 1:
+	{
 		ViewPipe(pi);
 		break;
+	}
 	case 2:
+	{
 		ViewKC(st);
 		break;
 	}
+	default:
+	{
+		cout << "Wrong action" << endl;
+	}
+	}
 }
 
-void UploadThat(int z)
+void UploadThat()
 {
-	switch (z)
+	switch (ChekNum(1,2, "\nSelect object 1-Pipe 2-KC: "))
 	{
 	case 1:
+	{
 		ViewPipe(UploadPipe());
 		break;
+	}
 	case 2:
+	{
 		ViewKC(UploadKC());
 		break;
 	}
+	default:
+	{
+		cout << "Wrong action" << endl;
+	}
+	}
 }
 
-void SaveThat(int l,const pipe& pi,const KC& st)
+void SaveThat(const pipe& pi,const KC& st)
 {
-	switch (l)
+	switch (ChekNum(1,3, "\nSelect object 1-Pipe 2-KC 3-All: "))
 	{
 	case 1:
+	{
 		SavePipe(pi);
 		break;
+	}
 	case 2:
+	{
 		SaveKC(st);
 		break;
+	}
 	case 3:
+	{
 		SaveAll(pi, st);
 		break;
 	}
+	default:
+	{
+		cout << "Wrong action" << endl;
+	}
+	}
+}
+
+void operator >>(istream& in, pipe& p)
+{
+
+	p.length = ChekNum(0, 1000, "\nType the length of the pipe: ");
+
+	p.diameter = ChekNum(0, 1000, "\nType the diameter of the pipe: ");
+
+	p.repair_status = ChekNum(0, 1, "\nType the status of the repair pipe: ");
+
+
 }
 
 int main()
 { 
 	pipe pi;
-	KC st; // узнать почему не работает в свиче
+	KC st; //
 	 
 
-	while (true)
+	while (1)
 	{
 		Menu();
-		int n;
-		cin >> n;
-
-		switch (n)
+		
+		switch (ChekNum(0,7, "\nSelect the desired number from the menu: "))
 		{
 		case 1:
-			pi = CreatePipe();
+		{	cin >> pi;
+			//pi = CreatePipe();
 			break;
+		}
 		case 2:
+		{
 			st = CreateKC();
 			break;
+		}
 		case 3:
+		{
 			cout << "\nSelect object 1-Pipe 2-KC: ";
-			int m;
-			cin >> m;
-			ViewThat(m, pi, st);
+			
+			ViewThat(pi, st);
 			break;
+		}
 		case 4:
+		{
 			EditPipe(pi);
 			break;
+		}
 		case 5:
+		{
 			EditKC(st);
 			break;
+		}
 		case 6 :
+		{
 			cout << "\nSelect object 1-Pipe 2-KC 3-All: ";
-			int l;
-			cin >> l;
-			SaveThat(l, pi, st);
+			
+			SaveThat(pi, st);
 			break;
+		}
 		case 7 :
+		{
 			cout << "\nSelect object 1-Pipe 2-KC: ";
-			int z;
-			cin >> z;
-			UploadThat(z);
+			
+			UploadThat();
 			break;
+		}
 		case 0 :
+		{
 			return 0;
+		}
+		default:
+		{
+			cout << "Wrong action" << endl;
+		}
 		}
 	} 
 	return 0;
