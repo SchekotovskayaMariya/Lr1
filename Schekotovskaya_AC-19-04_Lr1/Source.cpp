@@ -321,6 +321,7 @@ void SaveThat(const pipe& pi,const KC& st)
 
 void operator >>(istream& in, pipe& p)
 {
+	p.id = 0;
 
 	p.length = ChekNum(0, 1000, "\nType the length of the pipe: ");
 
@@ -354,9 +355,7 @@ int main()
 			break;
 		}
 		case 3:
-		{
-			cout << "\nSelect object 1-Pipe 2-KC: ";
-			
+		{	
 			ViewThat(pi, st);
 			break;
 		}
@@ -372,15 +371,11 @@ int main()
 		}
 		case 6 :
 		{
-			cout << "\nSelect object 1-Pipe 2-KC 3-All: ";
-			
 			SaveThat(pi, st);
 			break;
 		}
 		case 7 :
 		{
-			cout << "\nSelect object 1-Pipe 2-KC: ";
-			
 			UploadThat();
 			break;
 		}
