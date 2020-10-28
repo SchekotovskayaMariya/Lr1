@@ -37,27 +37,25 @@ pipe CreatePipe()
 {
 	pipe p;
 
-	//cout << "Type the pipe ID: ";
 		p.id = 0;
-
 	
-		p.length = ChekNum(0, 1000, "\nType the length of the pipe: ");
+		p.length = ChekNum(1, 1000, "\nType the length of the pipe: ");
 		
-		p.diameter = ChekNum(0, 1000, "\nType the diameter of the pipe: ");
+		p.diameter = ChekNum(1, 1000, "\nType the diameter of the pipe: ");
 
-		p.repair_status = ChekNum(0, 1, "\nType the status of the repair pipe: ");
+		p.repair_status = ChekNum(0, 1, "\nType the status of the repair pipe (1-under repair, 2-not under repair): ");
 	
-	/*
+		/*cout << "Type the pipe ID: ";
+
 		cout << "\nType the length of the pipe: ";
 		cin >> p.length;
 	
 		cout << "\nType the diameter of the pipe: ";
 		cin >> p.diameter;
-	*/
-		/*
-			cout << "\nType the status of the repair pipe: ";
-			cin >> p.repair_status;
-		*/
+	
+		cout << "\nType the status of the repair pipe: ";
+		cin >> p.repair_status;*/
+		
 
 	return p;
 }
@@ -104,7 +102,7 @@ void SavePipe(const pipe& p)
 	}
 }
 
-void EditPipe(pipe& p)
+void EditPipe(pipe& p)// ссылки  //проверка на ввод букв мб ChekNum
 {
 	if (p.repair_status == 1)
 	{
@@ -119,34 +117,30 @@ void EditPipe(pipe& p)
 
 }
 
-KC CreateKC()
+KC CreateKC() //название станции с пробелом
 {
 	KC s;
 
-	//cout << "Type the KC ID: ";
 	s.id = 0;
 	
 	cout << "\nType a name of the KC: ";
+	/*getline(cin, s.name);*/
 	cin >> s.name;
 
 	s.n_ws = ChekNum(0, 1000, "\nType the number of workshops: ");
 
-	do
-	{
-		cin.clear();
-		cin.ignore(1000, '\n');
-		s.n_ws_op = ChekNum(0, 1000, "\nType the number of workshops in operation: ");
-	}
-	while (s.n_ws_op > s.n_ws);
+	s.n_ws_op = ChekNum(0, s.n_ws, "\nType the number of workshops in operation: ");
 
-	/*cout << "\nType the number of workshops: ";
-	cin >> s.n_ws;*/
+	/*cout << "Type the KC ID: ";
 
-	/*cout << "\nType the number of workshops in operation: ";
-	cin >> s.n_ws_op;*/
+	cout << "\nType the number of workshops: ";
+	cin >> s.n_ws;
 
-//	cout << "\nType the efficiency of the KC: ";
-//	cin >> s.ef;
+	cout << "\nType the number of workshops in operation: ";
+	cin >> s.n_ws_op;
+
+	cout << "\nType the efficiency of the KC: ";
+	cin >> s.ef;*/
 
 	srand(time(NULL));
 	s.ef = 1. / (rand() % 100);
@@ -188,7 +182,7 @@ void ViewKC(const KC& s)
 		<< "Efficiency: " << s.ef << endl;
 }
 
-void SaveKC(const KC& s)
+void SaveKC(const KC& s)//ссылки
 {
 	ofstream fout;
 	fout.open("data2.txt", ios::out);
@@ -200,7 +194,7 @@ void SaveKC(const KC& s)
 	}
 }
 
-void EditKC(KC& s)
+void EditKC(KC& s) //cheknum на 1 2 //дублирование кода, сделать после действия плюс минус 1 проверить 
 {
 
 	cout << "\n1. Turn on the workshop ";
@@ -217,7 +211,7 @@ void EditKC(KC& s)
 		}
 		else
 		{
-			cout << "\nYou can choose 2 only, try again\n";
+			cout << "\nYou can only choose 2, try again\n";
 		}
 	}
 	else
@@ -230,7 +224,7 @@ void EditKC(KC& s)
 		
 		else
 		{
-			cout << "\nYou can choose 1 only, try again\n";
+			cout << "\nYou can only choose 1, try again\n";
 		}
 	}
 }
@@ -252,25 +246,49 @@ void SaveAll(const pipe& p, const KC& s)
 {
 	ofstream fout;
 	fout.open("data3.txt", ios::out);
+		
+		fout.precision(2);
+		fout << p.id << endl
+			<< p.length << endl
+			<< p.diameter << endl
+			<< p.repair_status << endl
 
+			<< s.id << endl
+			<< s.name << endl
+			<< s.n_ws << endl
+			<< s.n_ws_op << endl
+			<< s.ef << endl;
 
-	fout << "\nID: " << p.id << endl
-		<< "Length: " << p.length << endl
-		<< "Diametr: " << p.diameter << endl
-		<< "Repair status: " << p.repair_status << endl;
+		fout.close();
+}
 
-	fout << "\nID: " << s.id << endl
-		<< "Name: " << s.name << endl
-		<< "Number of workshops: " << s.n_ws << endl
-		<< "Number of workshops in operation: " << s.n_ws_op << endl
-		<< "Efficiency: " << s.ef << endl;
+void UploadAll(pipe& p, KC& s)
+{
 
-	fout.close();
+	ifstream fin;
+	fin.open("data3.txt", ios::in);
+
+	if (fin.is_open())
+	{
+		fin >> p.id;
+		fin >> p.length;
+		fin >> p.diameter;
+		fin >> p.repair_status;
+
+		fin >> s.id;
+		fin >> s.name;
+		fin >> s.n_ws;
+		fin >> s.n_ws_op;
+		fin >> s.ef;
+
+		
+	}
+	fin.close(); // я понял в чем ошибка сейчас думаю как лучше исправить
 }
 
 void ViewThat(const pipe& pi,const KC& st)
 {
-	switch (ChekNum(1,2, "\nSelect object 1-Pipe 2-KC: "))
+	switch (ChekNum(1,2, "\nSelect object 1-Pipe 2-KC 3-All: "))
 	{
 	case 1:
 	{
@@ -289,9 +307,9 @@ void ViewThat(const pipe& pi,const KC& st)
 	}
 }
 
-void UploadThat()
+void UploadThat(pipe& p, KC& s)
 {
-	switch (ChekNum(1,2, "\nSelect object 1-Pipe 2-KC: "))
+	switch (ChekNum(1,3, "\nSelect object 1-Pipe 2-KC 3-All: "))
 	{
 	case 1:
 	{
@@ -301,6 +319,11 @@ void UploadThat()
 	case 2:
 	{
 		ViewKC(UploadKC());
+		break;
+	}
+	case 3:
+	{
+		UploadAll(p, s);
 		break;
 	}
 	default:
@@ -336,17 +359,17 @@ void SaveThat(const pipe& pi,const KC& st)
 	}
 }
 
-void operator >>(istream& in, pipe& p)
+istream& operator >>(istream& in, pipe& p)
 {
 	p.id = 0;
 
-	p.length = ChekNum(0, 1000, "\nType the length of the pipe: ");
+	p.length = ChekNum(1, 1000, "\nType the length of the pipe: ");
 
-	p.diameter = ChekNum(0, 1000, "\nType the diameter of the pipe: ");
+	p.diameter = ChekNum(1, 1000, "\nType the diameter of the pipe: ");
 
 	p.repair_status = ChekNum(0, 1, "\nType the status of the repair pipe: ");
 
-
+	return in;
 }
 
 int main()
@@ -393,7 +416,7 @@ int main()
 		}
 		case 7 :
 		{
-			UploadThat();
+			UploadThat(pi, st);
 			break;
 		}
 		case 0 :
