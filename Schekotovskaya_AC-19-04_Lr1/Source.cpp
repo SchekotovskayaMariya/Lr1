@@ -124,9 +124,9 @@ KC CreateKC() //название станции с пробелом
 	s.id = 0;
 	
 	cout << "\nType a name of the KC: ";
-	/*getline(cin, s.name);*/
-	cin >> s.name;
-
+	cin.get();
+	getline(cin, s.name);
+	
 	s.n_ws = ChekNum(0, 1000, "\nType the number of workshops: ");
 
 	s.n_ws_op = ChekNum(0, s.n_ws, "\nType the number of workshops in operation: ");
