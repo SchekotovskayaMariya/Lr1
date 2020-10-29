@@ -275,7 +275,7 @@ void UploadAll(pipe& p, KC& s)
 
 		
 	}
-	fin.close(); // я понял в чем ошибка сейчас думаю как лучше исправить
+	fin.close(); 
 }
 
 void ViewAll(const pipe& p, const KC& s)
