@@ -102,8 +102,9 @@ void SavePipe(const pipe& p)
 	}
 }
 
-void EditPipe(pipe& p)// ссылки  //проверка на ввод букв мб ChekNum
+void EditPipe(pipe& p)
 {
+
 	if (p.repair_status == 1)
 	{
 		p.repair_status = 0;
@@ -117,7 +118,7 @@ void EditPipe(pipe& p)// ссылки  //проверка на ввод букв мб ChekNum
 
 }
 
-KC CreateKC() //название станции с пробелом
+KC CreateKC() 
 {
 	KC s;
 
@@ -182,7 +183,7 @@ void ViewKC(const KC& s)
 		<< "Efficiency: " << s.ef << endl;
 }
 
-void SaveKC(const KC& s)//ссылки
+void SaveKC(const KC& s)
 {
 	ofstream fout;
 	fout.open("data2.txt", ios::out);
@@ -194,38 +195,29 @@ void SaveKC(const KC& s)//ссылки
 	}
 }
 
-void EditKC(KC& s) //cheknum на 1 2 //дублирование кода, сделать после действия плюс минус 1 проверить 
+void EditKC(KC& s) //cheknum на 1 2 //дублирование кода, сделать после действия плюс минус 1 проверку 
 {
-
 	cout << "\n1. Turn on the workshop ";
 	cout << "\n2. Turn off the workshop";
 	cout << "\nChoose: ";
 	int choiсe;
-	cin >> choiсe;
-	if (choiсe == 1)
+	choiсe = ChekNum(1,2,"\Choose again: ");
+
+	if (choiсe == 1 && s.n_ws_op < s.n_ws)
 	{
-		if(s.n_ws_op < s.n_ws)
-		{
-			s.n_ws_op += 1;
-			cout << s.n_ws_op;
-		}
-		else
-		{
-			cout << "\nYou can only choose 2, try again\n";
-		}
+
+		s.n_ws_op += 1;
+		cout << s.n_ws_op;
+	}
+	else if (choiсe == 0 && s.n_ws_op > 0)
+	{
+		s.n_ws_op -= 1;
+		cout << s.n_ws_op;
 	}
 	else
 	{
-		if(s.n_ws_op > 0)
-		{
-			s.n_ws_op -= 1;
-		cout << s.n_ws_op;
-		}
-		
-		else
-		{
-			cout << "\nYou can only choose 1, try again\n";
-		}
+		cout << "\nPlease, try again\n";
+
 	}
 }
 
@@ -378,7 +370,7 @@ int main()
 	KC st; //
 	 
 
-	while (1)
+	while (true)
 	{
 		Menu();
 		
@@ -386,7 +378,6 @@ int main()
 		{
 		case 1:
 		{	cin >> pi;
-		/*pi = CreatePipe();*/
 			break;
 		}
 		case 2:
