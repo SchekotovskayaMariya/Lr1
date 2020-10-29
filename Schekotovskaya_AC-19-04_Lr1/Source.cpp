@@ -200,6 +200,7 @@ void EditKC(KC& s)
 	cout << "\n1. Turn on the workshop ";
 	cout << "\n2. Turn off the workshop";
 	cout << "\nChoose: ";
+	
 	int choiñe;
 	choiñe = ChekNum(1,2,"\Choose again: ");
 
