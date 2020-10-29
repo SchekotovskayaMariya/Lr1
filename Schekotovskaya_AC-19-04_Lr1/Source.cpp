@@ -195,7 +195,7 @@ void SaveKC(const KC& s)
 	}
 }
 
-void EditKC(KC& s) //cheknum на 1 2 //дублирование кода, сделать после действия плюс минус 1 проверку 
+void EditKC(KC& s) 
 {
 	cout << "\n1. Turn on the workshop ";
 	cout << "\n2. Turn off the workshop";
@@ -278,9 +278,23 @@ void UploadAll(pipe& p, KC& s)
 	fin.close(); // я понял в чем ошибка сейчас думаю как лучше исправить
 }
 
+void ViewAll(const pipe& p, const KC& s)
+{
+	cout.precision(2);
+	cout << "\nPipe:" << "\nID: " << p.id << endl
+		<< "Length: " << p.length << endl
+		<< "Diametr: " << p.diameter << endl
+		<< "Repair status: " << p.repair_status << endl;
+	cout << "\nKC" << "\nID: " << s.id << endl
+		<< "Name: " << s.name << endl
+		<< "Number of workshops: " << s.n_ws << endl
+		<< "Number of workshops in operation: " << s.n_ws_op << endl
+		<< "Efficiency: " << s.ef << endl;
+}
+
 void ViewThat(const pipe& pi,const KC& st)
 {
-	switch (ChekNum(1,2, "\nSelect object 1-Pipe 2-KC 3-All: "))
+	switch (ChekNum(1,3, "\nSelect object 1-Pipe 2-KC 3-All: "))
 	{
 	case 1:
 	{
@@ -290,6 +304,11 @@ void ViewThat(const pipe& pi,const KC& st)
 	case 2:
 	{
 		ViewKC(st);
+		break;
+	}
+	case 3:
+	{
+		ViewAll(pi, st);
 		break;
 	}
 	default:
@@ -367,7 +386,7 @@ istream& operator >>(istream& in, pipe& p)
 int main()
 { 
 	pipe pi;
-	KC st; //
+	KC st; 
 	 
 
 	while (true)
